@@ -147,7 +147,7 @@ extend type Mutation {
         input
         """
         input: CharacterCreateInput!
-    ): CharacterCreatePayload! @isAuthenticated
+    ): CharacterCreatePayload!
     """
     characterUpdate: キャラクター情報更新
     """
