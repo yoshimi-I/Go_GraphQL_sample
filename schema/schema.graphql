@@ -1,0 +1,12 @@
+type Query
+
+type Mutation
+
+interface Node {
+    """
+    Primary key
+    """
+    id: UUID!
+}
+
+scalar UUID

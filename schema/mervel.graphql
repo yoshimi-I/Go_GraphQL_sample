@@ -1,0 +1,230 @@
+# ------ [Types] ------
+
+"""
+Character: Marvel ユニバースのキャラクター
+"""
+type Character implements Node {
+    """
+    id: Primary key
+    """
+    id: UUID!
+    """
+    name: キャラクターの本名
+    """
+    name: String!
+    """
+    alias: キャラクターのヒーロー名やヴィラン名
+    """
+    alias: String
+    """
+    imageURL: キャラクター画像が格納されているオブジェクトストレージの URL
+    """
+    imageURL: String
+    """
+    characterType: キャラクターの種類（ヒーロー、ヴィラン、アンチヒーロー）
+    """
+    characterType: CharacterType!
+    """
+    powers: キャラクターの能力リスト
+    """
+    powers: [String!]!
+    """
+    affiliations: キャラクターの所属グループ
+    """
+    affiliations: [String!]!
+}
+
+"""
+CharacterType: キャラクターの種類を表す列挙型
+"""
+enum CharacterType {
+    HERO
+    VILLAIN
+    ANTI_HERO
+}
+
+# ------ [Input] ------
+
+"""
+CharacterCreateInput
+"""
+input CharacterCreateInput {
+    """
+    name
+    """
+    name: String! @validation(format: "required,min=2,max=100")
+    """
+    alias
+    """
+    alias: String @validation(format: "max=100")
+    """
+    imageURL
+    """
+    imageURL: String @validation(format: "url,max=255")
+    """
+    characterType
+    """
+    characterType: CharacterType!
+    """
+    powers
+    """
+    powers: [String!]!
+    """
+    affiliations
+    """
+    affiliations: [String!]!
+}
+
+"""
+CharacterUpdateInput
+"""
+input CharacterUpdateInput {
+    """
+    id
+    """
+    id: UUID!
+    """
+    name
+    """
+    name: String
+    """
+    alias
+    """
+    alias: String
+    """
+    imageURL
+    """
+    imageURL: String
+    """
+    characterType
+    """
+    characterType: CharacterType
+    """
+    powers
+    """
+    powers: [String!]
+    """
+    affiliations
+    """
+    affiliations: [String!]
+}
+
+# ------ [Query] ------
+
+extend type Query {
+    """
+    character(): キャラクターの一件取得
+    """
+    character(
+        """
+        id: Primary key
+        """
+        id: UUID!
+    ): Character!
+    """
+    allCharacters(): 全キャラクターの取得
+    """
+    allCharacters: [Character!]!
+    """
+    charactersByType(): 指定したタイプのキャラクター一覧取得
+    """
+    charactersByType(
+        """
+        characterType: キャラクターの種類
+        """
+        characterType: CharacterType!
+    ): [Character!]!
+}
+
+# ------ [Mutation] ------
+
+extend type Mutation {
+    """
+    characterCreate: 新規キャラクター作成
+    """
+    characterCreate(
+        """
+        input
+        """
+        input: CharacterCreateInput!
+    ): CharacterCreatePayload! @isAuthenticated
+    """
+    characterUpdate: キャラクター情報更新
+    """
+    characterUpdate(
+        """
+        input
+        """
+        input: CharacterUpdateInput!
+    ): CharacterUpdatePayload!
+}
+
+# ------ [Payload] ------
+
+"""
+CharacterCreatePayload: キャラクター新規作成成功時のレスポンス型
+"""
+type CharacterCreatePayload {
+    """
+    id: Primary key
+    """
+    id: UUID!
+    """
+    name: キャラクターの本名
+    """
+    name: String!
+    """
+    alias: キャラクターのヒーロー名やヴィラン名
+    """
+    alias: String
+    """
+    imageURL: キャラクター画像が格納されているオブジェクトストレージの URL
+    """
+    imageURL: String
+    """
+    characterType: キャラクターの種類（ヒーロー、ヴィラン、アンチヒーロー）
+    """
+    characterType: CharacterType!
+    """
+    powers: キャラクターの能力リスト
+    """
+    powers: [String!]!
+    """
+    affiliations: キャラクターの所属グループ
+    """
+    affiliations: [String!]!
+}
+
+"""
+CharacterUpdatePayload: キャラクター更新成功時のレスポンス型
+"""
+type CharacterUpdatePayload {
+    """
+    id: Primary key
+    """
+    id: UUID!
+    """
+    name: キャラクターの本名
+    """
+    name: String!
+    """
+    alias: キャラクターのヒーロー名やヴィラン名
+    """
+    alias: String
+    """
+    imageURL: キャラクター画像が格納されているオブジェクトストレージの URL
+    """
+    imageURL: String
+    """
+    characterType: キャラクターの種類（ヒーロー、ヴィラン、アンチヒーロー）
+    """
+    characterType: CharacterType!
+    """
+    powers: キャラクターの能力リスト
+    """
+    powers: [String!]!
+    """
+    affiliations: キャラクターの所属グループ
+    """
+    affiliations: [String!]!
+}
